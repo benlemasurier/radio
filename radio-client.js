@@ -50,6 +50,7 @@ var radio = (function() {
 
 	function SearchResults(radios) {
 		if (Object.keys(radios).length > 0) {
+			$("#search-results").empty()
 			for (item in radios) {
 				radio.createCollectionWithImg(radios[item]);
 			}

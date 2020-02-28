@@ -47,13 +47,13 @@ beo.bus.on('radio', function(event) {
 				
 				for (i in search_results) {
 					if (search_results[i].item && search_results[i].item == "station") {
-
-						found_stations[search_results[i].guide_id] = search_results[i];
-						
-						if (settings.favourites[search_results[i].guide_id]) {
-							found_stations[search_results[i].guide_id].isFavourite = true;
-						} else {
-							found_stations[search_results[i].guide_id].isFavourite = false;
+						if (search_results[i].formats && search_results[i].formats !== "wma") {
+							found_stations[search_results[i].guide_id] = search_results[i];
+							if (settings.favourites[search_results[i].guide_id]) {
+								found_stations[search_results[i].guide_id].isFavourite = true;
+							} else {
+								found_stations[search_results[i].guide_id].isFavourite = false;
+							}
 						}
 					}
 				}
