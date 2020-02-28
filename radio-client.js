@@ -68,6 +68,7 @@ var radio = (function() {
 				itemOptions = {
 					label: radios[item].title,
 					icon: radios[item].img,
+					iconSize: "small",
 					onclick: "radio.playRadio('"+radios[item].url+"');",
 					onclickSecondary: "radio.addToFavorite('"+item+"')",
 					secondarySymbol: "./common/symbols-black/star-filled.svg",
@@ -96,6 +97,7 @@ var radio = (function() {
 		itemOptions = {
 			label: item.text,
 			icon: item.image,
+			iconSize: "small",
 			onclick: "radio.playRadio('"+item.URL+"');",
 			onclickSecondary: "radio.addToFavorite('"+item.guide_id+"')",
 			secondarySymbol: secondarySymbol,

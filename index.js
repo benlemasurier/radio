@@ -11,15 +11,15 @@ var search_results;
 var found_stations = {};
 
 var tunein = new TuneIn({
-    protocol        : 'https',          // Protocol to use, either 'http' or 'https', default https
-    cacheRequests   : true,             // Wheter or not to cache requests, default false
-    cacheTTL        : 1000 * 60 * 30,   // TTL for cached results, default 5 mins
-    partnerId       : 'no default'      // a partnerId string provided by TuneIn, default to undefined
+    protocol        : 'https',          
+    cacheRequests   : true,             
+    cacheTTL        : 1000 * 60 * 30,   
+    partnerId       : 'no default'      
 });
 
 beo.bus.on('general', function(event) {
 	if (event.header == "activatedExtension") {
-		if (event.content == "radio") {
+		if (event.content.extension == "radio") {
 			beo.sendToUI("radio", {
 				header: "homeContent", 
 				content: {
@@ -111,6 +111,13 @@ beo.bus.on('radio', function(event) {
 	}
 });
 
+function checkMPDStatus(callback) {
+	if (beo.extensions.mpd && beo.extensions.mpd.isEnabled) {
+		beo.extensions.mpd.isEnabled(callback);
+	}
+}
+
 module.exports = {
-	version: version
+	version: version,
+	isEnabled: checkMPDStatus
 };
