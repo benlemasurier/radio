@@ -69,7 +69,7 @@ var radio = (function() {
 					label: radios[item].title,
 					icon: radios[item].img,
 					iconSize: "small",
-					onclick: "radio.playRadio('"+radios[item].url+"', '"+radios[item].text+"');",
+					onclick: "radio.playRadio('"+radios[item].url+"', '"+radios[item].title+"');",
 					onclickSecondary: "radio.addToFavorite('"+item+"')",
 					secondarySymbol: "./common/symbols-black/star-filled.svg",
 					data: { "data-guide-id": item }
@@ -81,12 +81,12 @@ var radio = (function() {
 		}
 	}
 
-	function playRadio(link, text) {
+	function playRadio(link, title) {
 		beo.sendToProduct("radio", { 
 			header: "play",
 			content: {
 				URL: link,
-				stationName: text	
+				stationName: title	
 			}
 		});
 	}
