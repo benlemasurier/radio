@@ -43,7 +43,7 @@ var radio = (function() {
 	    }
 	})
 
-	$("#return-to-radio-list").click(function() {
+	$("#return-l2").click(function() {
 		$("#search-results").empty()
 		$(".radio-group-l2").empty()
 	})
@@ -69,7 +69,7 @@ var radio = (function() {
 					label: radios[item].title,
 					icon: radios[item].img,
 					iconSize: "small",
-					onclick: "radio.playRadio('"+radios[item].url+"');",
+					onclick: "radio.playRadio('"+radios[item].url+"', '"+radios[item].text+"');",
 					onclickSecondary: "radio.addToFavorite('"+item+"')",
 					secondarySymbol: "./common/symbols-black/star-filled.svg",
 					data: { "data-guide-id": item }
@@ -81,10 +81,13 @@ var radio = (function() {
 		}
 	}
 
-	function playRadio(link) {
+	function playRadio(link, text) {
 		beo.sendToProduct("radio", { 
 			header: "play",
-			content: link
+			content: {
+				URL: link,
+				stationName: text	
+			}
 		});
 	}
 
@@ -98,7 +101,7 @@ var radio = (function() {
 			label: item.text,
 			icon: item.image,
 			iconSize: "small",
-			onclick: "radio.playRadio('"+item.URL+"');",
+			onclick: "radio.playRadio('"+item.URL+"', '"+item.text+"');",
 			onclickSecondary: "radio.addToFavorite('"+item.guide_id+"')",
 			secondarySymbol: secondarySymbol,
 			data: { "data-guide-id": item.guide_id }

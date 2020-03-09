@@ -68,7 +68,7 @@ beo.bus.on('radio', function(event) {
 
 			break;
 		case "play":
-			exec('/opt/hifiberry/bin/start-radio "'+ event.content +'"', 
+			exec('/opt/hifiberry/bin/start-radio "'+ event.content.URL +'"', 
 				function(error, stdout, stderr) {
 					if (error) {
 						if (debug) console.error("Starting radio failed: "+error, stderr);
@@ -77,6 +77,12 @@ beo.bus.on('radio', function(event) {
 						}
 				}
 			)
+
+			if (beo.extensions.sources && beo.extensions.sources.setSourceOptions) {
+			    beo.extensions.sources.setSourceOptions("radio", {
+				    aliasInNowPlaying: event.content.stationName
+			    }, true);
+			}
 
 			break;
 		case "add-to-favourite":
