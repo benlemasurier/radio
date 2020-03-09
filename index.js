@@ -68,7 +68,7 @@ beo.bus.on('radio', function(event) {
 
 			break;
 		case "play":
-			exec('/opt/hifiberry/bin/start-radio "'+ event.content.url +'" "'+event.content.stationname+'"', 
+			exec('/opt/hifiberry/bin/start-radio "'+ event.content.URL +'" "'+event.content.stationName+'"', 
 				function(error, stdout, stderr) {
 					if (error) {
 						if (debug) console.error("Starting radio failed: "+error, stderr);
