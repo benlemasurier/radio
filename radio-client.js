@@ -98,13 +98,13 @@ var radio = (function() {
 			secondarySymbol = "./common/symbols-black/star.svg";
 		}
 		itemOptions = {
-			label: item.text,
-			icon: item.image,
+			label: item.name,
+			icon: item.favicon,
 			iconSize: "small",
-			onclick: "radio.playRadio('"+item.URL+"', '"+item.text+"');",
-			onclickSecondary: "radio.addToFavorite('"+item.guide_id+"')",
+			onclick: "radio.playRadio('"+item.url+"', '"+item.name+"');",
+			onclickSecondary: "radio.addToFavorite('"+item.stationuuid+"')",
 			secondarySymbol: secondarySymbol,
-			data: { "data-guide-id": item.guide_id }
+			data: { "data-guide-id": item.stationuuid }
 		}
 		$("#search-results").append(beo.createCollectionItem(itemOptions));
 	}

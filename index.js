@@ -1,6 +1,6 @@
 var version = require("./package.json").version;
-var exec    = require( 'child_process' ).exec;
-var TuneIn  = require( 'node-tunein-radio');
+var exec    = require('child_process' ).exec;
+var rb	    = require('radio-browser');
 
 var debug = beo.debug;
 
@@ -9,13 +9,6 @@ var settings = JSON.parse(JSON.stringify(defaultSettings));
 
 var search_results;
 var found_stations = {};
-
-var tunein = new TuneIn({
-    protocol        : 'https',          
-    cacheRequests   : true,             
-    cacheTTL        : 1000 * 60 * 30,   
-    partnerId       : 'no default'      
-});
 
 beo.bus.on('general', function(event) {
 	if (event.header == "activatedExtension") {
@@ -39,30 +32,34 @@ beo.bus.on('radio', function(event) {
 
 			break;
 		case "search":
-			var query = event.content;
-			tunein.search(query).then(function(result) {
-
-				search_results = result.body;
+			var query = {
+				name: event.content,
+				hidebroken: true,
+				order: "votes",
+				limit: 100
+			};
+			rb.searchStations(query).then(function(search_results) {
 				found_stations = {};
 				
 				for (i in search_results) {
-					if (search_results[i].item && search_results[i].item == "station") {
-						if (search_results[i].formats && search_results[i].formats !== "wma") {
-							found_stations[search_results[i].guide_id] = search_results[i];
-							if (settings.favourites[search_results[i].guide_id]) {
-								found_stations[search_results[i].guide_id].isFavourite = true;
-							} else {
-								found_stations[search_results[i].guide_id].isFavourite = false;
-							}
-						}
+					console.log(search_results[i]);
+
+					var station = search_results[i];
+					if (station.codec === "wma") {
+						continue;
+					}
+
+					found_stations[station.stationuuid] = station;
+					if (settings.favourites[station.stationuuid] &&
+						settings.favourites[station.stationuuid].isFavourite) {
+						found_stations[station.stationuuid].isFavourite = true;
 					}
 				}
 
 				beo.sendToUI("radio", {header: "searchResults", content: { found_stations }});
-
 			}).catch(function(err) {
-				if (err) {
-					if (debug) console.log(err);
+				if (err && debug) {
+					console.log(err);
 				}
 			})
 
@@ -88,9 +85,9 @@ beo.bus.on('radio', function(event) {
 		case "add-to-favourite":
 			if (!settings.favourites[event.content.stationId]) {
 				settings.favourites[event.content.stationId] = {
-					title: found_stations[event.content.stationId].text,
-					img: found_stations[event.content.stationId].image,
-					url: found_stations[event.content.stationId].URL
+					title: found_stations[event.content.stationId].name,
+					img: found_stations[event.content.stationId].favicon,
+					url: found_stations[event.content.stationId].url
 				}
 				isFavourite = true;
 			} else {
